@@ -8,7 +8,7 @@ using System.Net;
 
 namespace InSharpAssessment.DataRepositories.DataManagers.Implementations
 {
-    internal class AddressData : IAddressData
+    public class AddressData : IAddressData
     {
         //db context instance 
         private readonly ApplicationDBContext dbContext;
@@ -17,6 +17,7 @@ namespace InSharpAssessment.DataRepositories.DataManagers.Implementations
         {
             dbContext = dBContext;
         }
+
         public async Task<int> CreateAddressAsync(AddressDataDTO addressDto)
         {
             // create new address for individual
