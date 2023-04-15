@@ -9,7 +9,7 @@ using System.Net;
 
 namespace InSharpAssessment.DataRepositories.DataManagers.Implementations
 {
-    internal class IndividualData : IIndividualData
+    public class IndividualData : IIndividualData
     {
         //db context instance 
         private readonly ApplicationDBContext dbContext;
@@ -18,12 +18,12 @@ namespace InSharpAssessment.DataRepositories.DataManagers.Implementations
         {
             dbContext = dBContext;
         }
-        public Task<bool> DeleteIndividualAsync(int id)
+        public async Task<bool> DeleteIndividualAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IndividualDataDTO> GetIndividualByIdAsync(int id)
+        public async Task<IndividualDataDTO> GetIndividualByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
@@ -66,7 +66,7 @@ namespace InSharpAssessment.DataRepositories.DataManagers.Implementations
             }
         }
 
-        public Task<IndividualDataDTO> UpdateIndividualAsync(IndividualDataDTO individual)
+        public async Task<int> UpdateIndividualAsync(IndividualDataDTO individual)
         {
             throw new NotImplementedException();
         }
