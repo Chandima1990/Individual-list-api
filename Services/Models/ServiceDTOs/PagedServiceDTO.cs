@@ -1,4 +1,4 @@
-﻿namespace InSharpAssessment.DataRepositories.Models.DTOs
+﻿namespace InSharpAssessment.Services.Models.ServiceDTOs
 {
 
     public class PagedServiceDTO<T>
