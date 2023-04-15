@@ -1,6 +1,5 @@
 ﻿namespace InSharpAssessment.DataRepositories.Models.DTOs
 {
-
     public class PagedDataDTO<T>
     {
         public int Total { get; set; }

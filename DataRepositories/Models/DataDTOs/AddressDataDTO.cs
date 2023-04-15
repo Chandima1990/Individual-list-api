@@ -1,6 +1,6 @@
 ﻿namespace InSharpAssessment.DataRepositories.Models.DTOs
 {
-    internal class AddressDataDTO
+    public class AddressDataDTO
     {
         public int Id { get; set; }
         public string? Street { get; set; }
