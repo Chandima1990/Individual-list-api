@@ -1,0 +1,24 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+*/obj
+
+/obj
+/InSharpAssessment/obj/Debug/net6.0/WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+/InSharpAssessment/obj/Debug/net6.0/WebAPI.csproj.AssemblyReference.cache
+/InSharpAssessment/obj/Debug/net6.0/WebAPI.assets.cache
+/InSharpAssessment/obj/WebAPI.csproj.nuget.dgspec.json
+/InSharpAssessment/obj/project.nuget.cache
+/InSharpAssessment/obj/project.assets.json
+/Services/obj/Services.csproj.nuget.dgspec.json
+/Services/obj/project.nuget.cache
+/Services/obj/project.assets.json
+/Services/obj/Debug/net6.0/Services.GeneratedMSBuildEditorConfig.editorconfig
+/Services/obj/Debug/net6.0/Services.assets.cache
+/DataRepositories/obj/project.nuget.cache
+/DataRepositories/obj/project.assets.json
+/DataRepositories/obj/Debug/net6.0/DataRepositories.GeneratedMSBuildEditorConfig.editorconfig
+/DataRepositories/obj/Debug/net6.0/DataRepositories.assets.cache
+/DataRepositories/obj/DataRepositories.csproj.nuget.dgspec.json
