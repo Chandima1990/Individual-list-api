@@ -2,7 +2,7 @@
 
 namespace InSharpAssessment.DataRepositories.DataManagers.Abstractions
 {
-    internal interface IAddressData
+    public interface IAddressData
     {
         //<summary>
         // Get Address by Id
