@@ -2,7 +2,7 @@
 
 namespace InSharpAssessment.DataRepositories.Models.DTOs
 {
-    internal class IndividualDataDTO
+    public class IndividualDataDTO
     {
         public int Id { get; set; }
         public string? FirstName { get; set; }
