@@ -1,5 +1,10 @@
 using InSharpAssessment.DataRepositories.Context;
+using InSharpAssessment.DataRepositories.DataManagers.Abstractions;
+using InSharpAssessment.DataRepositories.DataManagers.Implementations;
+using InSharpAssessment.Services.ServiceManagers.Abstractions;
+using InSharpAssessment.Services.ServiceManagers.Implementations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +18,22 @@ builder.Services.AddDbContext<ApplicationDBContext>(opt =>
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddTransient<IAddressService, AddressService>();
+builder.Services.AddTransient<IIndividualService, IndividualService>();
+builder.Services.AddTransient<IAddressData, AddressData>();
+builder.Services.AddTransient<IIndividualData, IndividualData>();
+
+// Configure swagger docs
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "InSharp In Memory Database Test API",
+        Version = "v1",
+        Description = "An API to perform individual's list operations"
+    });
+});
 
 var app = builder.Build();
 
