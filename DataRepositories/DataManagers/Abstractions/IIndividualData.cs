@@ -6,7 +6,7 @@ namespace InSharpAssessment.DataRepositories.DataManagers.Abstractions
     /// Abstraction for Individual Data, 
     /// All the CURD operations handle with this interface
     /// </summary>
-    internal interface IIndividualData
+    public interface IIndividualData
     {
 
         //<summary>
@@ -27,8 +27,8 @@ namespace InSharpAssessment.DataRepositories.DataManagers.Abstractions
         // Update Individual
         // </summary>
         // <param name="individual">Individual</param>
-        // <returns>Individual</returns>
-        Task<IndividualDataDTO> UpdateIndividualAsync(IndividualDataDTO individual);
+        // <returns>Individual Id</returns>
+        Task<int> UpdateIndividualAsync(IndividualDataDTO individual);
 
 
         //<summary>
