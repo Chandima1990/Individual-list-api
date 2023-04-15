@@ -1,6 +1,6 @@
-﻿using InSharpAssessment.DataRepositories.Models.Entities;
+﻿using InSharpAssessment.DataRepositories.Models.DTOs;
 
-namespace InSharpAssessment.DataRepositories.Repositories.Abstractions
+namespace InSharpAssessment.DataRepositories.DataManagers.Abstractions
 {
     /// <summary>
     /// Abstraction for Individual Data, 
@@ -14,21 +14,21 @@ namespace InSharpAssessment.DataRepositories.Repositories.Abstractions
         // </summary>
         // <param name="id">Individual Id</param>
         // <returns>Individual</returns>
-        Task<Individual> GetIndividualByIdAsync(int id);
+        Task<IndividualDataDTO> GetIndividualByIdAsync(int id);
 
         //<summary>
         // Save new Individual
         // </summary>
         // <param name="individual">Individual</param>
-        // <returns>Individual</returns>
-        Task<Individual> SaveIndividualAsync(Individual individual);
+        // <returns>Individual Id</returns>
+        Task<int> CreateIndividualAsync(IndividualDataDTO individual);
 
         //<summary>
         // Update Individual
         // </summary>
         // <param name="individual">Individual</param>
         // <returns>Individual</returns>
-        Task<Individual> UpdateIndividualAsync(Individual individual);
+        Task<IndividualDataDTO> UpdateIndividualAsync(IndividualDataDTO individual);
 
 
         //<summary>
@@ -37,5 +37,11 @@ namespace InSharpAssessment.DataRepositories.Repositories.Abstractions
         // <param name="id">Individual Id</param>
         // <returns>bool</returns>
         Task<bool> DeleteIndividualAsync(int id);
+
+        //<summary>
+        // Get All Individuals 
+        // </summary>
+        // <returns>Individuals</returns>
+        Task<List<IndividualDataDTO>> GetAllIndividualsAsync();
     }
 }
