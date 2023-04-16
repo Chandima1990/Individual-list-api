@@ -46,3 +46,10 @@
 /WebAPI/bin/Debug/net6.0/Common.pdb
 /WebAPI/bin/Debug/net6.0/Common.dll
 /WebAPI/WebAPI.csproj.user
+/Services/bin/Debug/net6.0/Services.deps.json
+/Services/bin/Debug/net6.0/DataRepositories.pdb
+/Services/bin/Debug/net6.0/DataRepositories.dll
+/Services/bin/Debug/net6.0/Common.pdb
+/Services/bin/Debug/net6.0/Common.dll
+/WebAPI/bin/Debug/net6.0/FluentValidation.DependencyInjectionExtensions.dll
+/WebAPI/bin/Debug/net6.0/FluentValidation.AspNetCore.dll
