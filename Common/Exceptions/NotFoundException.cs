@@ -1,7 +1,6 @@
-﻿using InSharpAssessment.Common.Exceptions;
-using System.Net;
+﻿using System.Net;
 
-namespace Common.Exceptions
+namespace InSharpAssessment.Common.Exceptions
 {
     public class NotFoundException : ApiException
     {
