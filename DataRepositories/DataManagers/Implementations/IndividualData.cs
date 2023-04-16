@@ -18,9 +18,50 @@ namespace InSharpAssessment.DataRepositories.DataManagers.Implementations
         {
             dbContext = dBContext;
         }
+
         public async Task<bool> DeleteIndividualAsync(int id)
         {
-            throw new NotImplementedException();
+            // get individual by id
+            try
+            {
+                var individual = await dbContext.Individuals
+                    .Where(i => i.Id == id)
+                    .Include(i => i.Addresses)
+                    .FirstOrDefaultAsync();
+
+                if (individual == null)
+                {
+                    throw new NotFoundException(HttpStatusCode.NotFound,
+                        $"The individual not found for the given id : {id}");
+                }
+
+                try
+                {
+                    dbContext.Individuals
+                    .Remove(individual);
+
+                    var result = await dbContext
+                        .SaveChangesAsync();
+
+                    return result;
+                }
+                catch (ApiException)
+                {
+                    //TODO logger
+                    throw;
+                }
+            }
+            catch (ApiException)
+            {
+                //TODO logger
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // unhandled server error
+                // TODO logger
+                throw new ServerErrorException(ex);
+            }
         }
 
         public async Task<IndividualDataDTO> GetIndividualByIdAsync(int id)
@@ -62,7 +103,8 @@ namespace InSharpAssessment.DataRepositories.DataManagers.Implementations
             {
                 var individual = individualDto.Adapt<Individual>();
 
-                var individualExist = dbContext.Individuals.Select(i =>
+                var individualExist = dbContext.Individuals
+                    .Where(i =>
                     i.PhoneNumber == individual.PhoneNumber &&
                     i.FirstName == individual.FirstName &&
                     i.LastName == individual.LastName);
@@ -103,10 +145,13 @@ namespace InSharpAssessment.DataRepositories.DataManagers.Implementations
             // get all individuals
             try
             {
-                var individuals = await dbContext.Individuals
+                var individuals = await dbContext
+                    .Individuals
+                    .Include(i => i.Addresses)
+                    .ProjectToType<IndividualDataDTO>()
                     .ToListAsync();
 
-                return individuals.Adapt<List<IndividualDataDTO>>();
+                return individuals;
             }
             catch (Exception ex)
             {
