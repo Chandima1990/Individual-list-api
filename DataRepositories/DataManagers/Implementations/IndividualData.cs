@@ -25,7 +25,34 @@ namespace InSharpAssessment.DataRepositories.DataManagers.Implementations
 
         public async Task<IndividualDataDTO> GetIndividualByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            // get individual by id
+            try
+            {
+                var individual = await dbContext.Individuals
+                    .Where(i => i.Id == id)
+                    .Include(i => i.Addresses)
+                    .ProjectToType<IndividualDataDTO>()
+                    .FirstOrDefaultAsync();
+
+                if (individual == null)
+                {
+                    throw new NotFoundException(HttpStatusCode.NotFound,
+                        $"The individual not found for the given id : {id}");
+                }
+
+                return individual;
+            }
+            catch (ApiException)
+            {
+                //TODO logger
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // unhandled server error
+                // TODO logger
+                throw new ServerErrorException(ex);
+            }
         }
 
         public async Task<int> CreateIndividualAsync(IndividualDataDTO individualDto)
