@@ -62,8 +62,8 @@ namespace InSharpAssessment.DataRepositories.Context
         {
             // Configure seed data for 'Individual' entity
             modelBuilder.Entity<Individual>().HasData(
-                new Individual { Id = 1, FirstName = "John", LastName = "Doe", PhoneNumber = "555-1234", AgeInYears = 30 },
-                new Individual { Id = 2, FirstName = "Jane", LastName = "Pifer", PhoneNumber = "555-5678", AgeInYears = 28 }
+                new Individual { Id = 1, FirstName = "John", LastName = "Doe", PhoneNumber = "5551234458", AgeInYears = 30 },
+                new Individual { Id = 2, FirstName = "Jane", LastName = "Pifer", PhoneNumber = "5555678365", AgeInYears = 28 }
             );
 
             // Configure seed data for 'Address' entity

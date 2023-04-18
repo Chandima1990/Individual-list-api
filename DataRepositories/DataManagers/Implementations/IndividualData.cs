@@ -43,6 +43,12 @@ namespace InSharpAssessment.DataRepositories.DataManagers.Implementations
                     var result = await dbContext
                         .SaveChangesAsync();
 
+                    if (result != true)
+                    {
+                        throw new ConflictException(HttpStatusCode.Conflict,
+                            $"Deleting the record for the id : {id} failed!");
+                    }
+
                     return result;
                 }
                 catch (ApiException)
@@ -118,7 +124,14 @@ namespace InSharpAssessment.DataRepositories.DataManagers.Implementations
 
                 await dbContext.Individuals
                     .AddAsync(individual);
-                await dbContext.SaveChangesAsync();
+
+                var result = await dbContext.SaveChangesAsync();
+
+                if (result != true)
+                {
+                    throw new ConflictException(HttpStatusCode.Conflict,
+                           $"Creating individual failed!");
+                }
 
                 return individual.Id;
 
@@ -142,6 +155,7 @@ namespace InSharpAssessment.DataRepositories.DataManagers.Implementations
             try
             {
                 var individual = await dbContext.Individuals
+                    .Include(i => i.Addresses)
                     .FirstOrDefaultAsync(i => i.Id == individualDto.Id);
 
                 // individual not found
@@ -151,13 +165,46 @@ namespace InSharpAssessment.DataRepositories.DataManagers.Implementations
                         "The individual not found in the system");
                 }
 
-                individual.Addresses = individualDto.Addresses.Adapt<List<Address>>();
                 individual.FirstName = individualDto.FirstName;
                 individual.LastName = individualDto.LastName;
                 individual.PhoneNumber = individualDto.PhoneNumber;
                 individual.AgeInYears = individualDto.AgeInYears;
 
-                await dbContext.SaveChangesAsync();
+                //Update the existing addresses
+                var updatedAdresses = individualDto.Addresses
+                    .Where(a => a.Id != 0)
+                    .Adapt<List<Address>>();
+
+                //loop through the updated addresses
+                foreach (var address in updatedAdresses)
+                {
+                    var dbAddress = individual.Addresses
+                        .FirstOrDefault(a => a.Id == address.Id);
+
+                    if (dbAddress != null)
+                    {
+                        dbAddress.Street = address.Street;
+                        dbAddress.City = address.City;
+                        dbAddress.Country = address.Country;
+                    }
+                }
+
+                //Add new addresses
+                var addedAddresses = individualDto.Addresses
+                    .Where(a => a.Id == 0)
+                    .Adapt<List<Address>>();
+
+                individual.Addresses
+                    .AddRange(addedAddresses);
+
+                var result = await dbContext
+                    .SaveChangesAsync();
+
+                if (result != true)
+                {
+                    throw new ConflictException(HttpStatusCode.Conflict,
+                           $"Updating individual failed!");
+                }
 
                 return individual.Id;
             }
