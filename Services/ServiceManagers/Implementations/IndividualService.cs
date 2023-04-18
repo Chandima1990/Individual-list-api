@@ -1,33 +1,118 @@
-﻿using InSharpAssessment.Services.Models.ServiceDTOs;
+﻿using InSharpAssessment.Common.Exceptions;
+using InSharpAssessment.DataRepositories.DataManagers.Abstractions;
+using InSharpAssessment.DataRepositories.Models.DTOs;
+using InSharpAssessment.Services.Models.ServiceDTOs;
 using InSharpAssessment.Services.ServiceManagers.Abstractions;
+using Mapster;
 
 namespace InSharpAssessment.Services.ServiceManagers.Implementations
 {
     public class IndividualService : IIndividualService
     {
+        private readonly IIndividualData _individualData;
+
+        public IndividualService(IIndividualData individualData)
+        {
+            _individualData = individualData;
+        }
+
         public async Task<bool> DeleteIndividualAsync(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = await _individualData
+                    .DeleteIndividualAsync(id);
+
+                return result;
+            }
+            catch (ApiException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new ServerErrorException(ex);
+            }
         }
 
-        public async Task<int> CreateIndividualAsync(IndividualCreateServiceDTO individual)
+        public async Task<int> CreateIndividualAsync(IndividualCreateServiceDTO individualDto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var individual = individualDto.Adapt<IndividualDataDTO>();
+
+                var result = await _individualData
+                    .CreateIndividualAsync(individual);
+
+                return result;
+            }
+            catch (ApiException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new ServerErrorException(ex);
+            }
         }
 
-        public async Task<List<IndividualServiceDTO>> GetAllIndividualsAsync()
+        public async Task<PagedServiceDTO<IndividualServiceDTO>> GetAllIndividualsAsync(int page, int pageSize)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var results = await _individualData
+                    .GetAllIndividualsAsync(page, pageSize);
+
+                return results.Adapt<PagedServiceDTO<IndividualServiceDTO>>();
+            }
+            catch (ApiException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new ServerErrorException(ex);
+            }
         }
 
         public async Task<IndividualServiceDTO> GetIndividualByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var individual = await _individualData
+                    .GetIndividualByIdAsync(id);
+
+                return individual.Adapt<IndividualServiceDTO>();
+            }
+            catch (ApiException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new ServerErrorException(ex);
+            }
         }
 
-        public async Task<int> UpdateIndividualAsync(IndividualUpdateServiceDTO individual)
+        public async Task<int> UpdateIndividualAsync(IndividualUpdateServiceDTO individualDto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var individual = individualDto.Adapt<IndividualDataDTO>();
+
+                var result = await _individualData
+                    .UpdateIndividualAsync(individual);
+
+                return result;
+            }
+            catch (ApiException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new ServerErrorException(ex);
+            }
         }
     }
 }

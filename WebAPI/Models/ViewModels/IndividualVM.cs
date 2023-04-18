@@ -11,6 +11,7 @@
 
     public class IndividualUpdateVM
     {
+        public int Id { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public List<AddressUpdateVM> Addresses { get; set; }

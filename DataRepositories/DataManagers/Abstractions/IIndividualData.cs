@@ -40,8 +40,12 @@ namespace InSharpAssessment.DataRepositories.DataManagers.Abstractions
 
         //<summary>
         // Get All Individuals 
+        // <param name="page">The page requested by the client</param>
+        // <param name="pageSize">No of records requested by the client</param>
         // </summary>
         // <returns>Individuals</returns>
-        Task<List<IndividualDataDTO>> GetAllIndividualsAsync();
+        Task<PagedDataDTO<IndividualDataDTO>> GetAllIndividualsAsync(
+            int page,
+            int pageSize);
     }
 }
