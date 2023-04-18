@@ -10,3 +10,5 @@ This project was generated with .NET Core 6
 * An activity log can be added in all activities.
 * Could have used a factory method to get the exception created instead of using 'new' keyword.
 * Unit tests can be written.
+
+NOTE: Mistakenly pushed a commit with my company email. Please ignore the 'chandimaei' contributor.
