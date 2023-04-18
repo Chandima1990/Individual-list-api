@@ -16,14 +16,14 @@ namespace InSharpAssessment.Services.ServiceManagers.Abstractions
         // </summary>
         // <param name="individual">Individual</param>
         // <returns>Individual Id</returns>
-        Task<int> CreateIndividualAsync(IndividualCreateServiceDTO individual);
+        Task<int> CreateIndividualAsync(IndividualCreateServiceDTO individualDto);
 
         //<summary>
         // Update Individual
         // </summary>
         // <param name="individual">Individual</param>
         // <returns>Individual id</returns>
-        Task<int> UpdateIndividualAsync(IndividualUpdateServiceDTO individual);
+        Task<int> UpdateIndividualAsync(IndividualUpdateServiceDTO individualDto);
 
         //<summary>
         // Delete Individual
@@ -35,7 +35,11 @@ namespace InSharpAssessment.Services.ServiceManagers.Abstractions
         //<summary>
         // Get All Individuals 
         // </summary>
+        // <param name="page">The page requested by the client</param>
+        // <param name="pageSize">No of records requested by the client</param>
         // <returns>Individuals</returns>
-        Task<List<IndividualServiceDTO>> GetAllIndividualsAsync();
+        Task<PagedServiceDTO<IndividualServiceDTO>> GetAllIndividualsAsync(
+            int page,
+            int pageSize);
     }
 }

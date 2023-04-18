@@ -7,7 +7,7 @@ namespace InSharpAssessment.DataRepositories.Models.DTOs
         public int Id { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        public List<Address>? Addresses { get; set; }
+        public List<AddressDataDTO>? Addresses { get; set; }
         public string? PhoneNumber { get; set; }
         public int AgeInYears { get; set; }
     }
