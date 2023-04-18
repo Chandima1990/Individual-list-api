@@ -197,13 +197,21 @@ namespace InSharpAssessment.DataRepositories.DataManagers.Implementations
                 individual.Addresses
                     .AddRange(addedAddresses);
 
+                //Remove the deleted addresses
+                individual.Addresses
+                    .RemoveAll(a =>
+                    !individualDto.Addresses
+                    .Select(ad => ad.Id)
+                    .Contains(a.Id)
+                    );
+
                 var result = await dbContext
                     .SaveChangesAsync();
 
                 if (result != true)
                 {
                     throw new ConflictException(HttpStatusCode.Conflict,
-                           $"Updating individual failed!");
+                           $"Updating individual failed or nothing to be changed!");
                 }
 
                 return individual.Id;
