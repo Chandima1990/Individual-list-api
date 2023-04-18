@@ -116,7 +116,8 @@ namespace InSharpAssessment.DataRepositories.DataManagers.Implementations
                         "The individual already exist in the system");
                 }
 
-                await dbContext.Individuals.AddAsync(individual);
+                await dbContext.Individuals
+                    .AddAsync(individual);
                 await dbContext.SaveChangesAsync();
 
                 return individual.Id;
@@ -135,23 +136,35 @@ namespace InSharpAssessment.DataRepositories.DataManagers.Implementations
             }
         }
 
-        public async Task<int> UpdateIndividualAsync(IndividualDataDTO individual)
+        public async Task<int> UpdateIndividualAsync(IndividualDataDTO individualDto)
         {
-            throw new NotImplementedException();
-        }
-
-        public async Task<List<IndividualDataDTO>> GetAllIndividualsAsync()
-        {
-            // get all individuals
+            // update individual
             try
             {
-                var individuals = await dbContext
-                    .Individuals
-                    .Include(i => i.Addresses)
-                    .ProjectToType<IndividualDataDTO>()
-                    .ToListAsync();
+                var individual = await dbContext.Individuals
+                    .FirstOrDefaultAsync(i => i.Id == individualDto.Id);
 
-                return individuals;
+                // individual not found
+                if (individual == null)
+                {
+                    throw new ConflictException(HttpStatusCode.NotFound,
+                        "The individual not found in the system");
+                }
+
+                individual.Addresses = individualDto.Addresses.Adapt<List<Address>>();
+                individual.FirstName = individualDto.FirstName;
+                individual.LastName = individualDto.LastName;
+                individual.PhoneNumber = individualDto.PhoneNumber;
+                individual.AgeInYears = individualDto.AgeInYears;
+
+                await dbContext.SaveChangesAsync();
+
+                return individual.Id;
+            }
+            catch (ApiException)
+            {
+                //TODO logger
+                throw;
             }
             catch (Exception ex)
             {
@@ -159,6 +172,62 @@ namespace InSharpAssessment.DataRepositories.DataManagers.Implementations
                 // TODO logger
                 throw new ServerErrorException(ex);
             }
+        }
+
+        public async Task<PagedDataDTO<IndividualDataDTO>> GetAllIndividualsAsync(int page, int pageSize)
+        {
+            // get all individuals
+            try
+            {
+                var individuals = dbContext
+                    .Individuals
+                    .Include(i => i.Addresses);
+
+                var pagedIndividuals = await TakePage(individuals, page, pageSize);
+
+                return pagedIndividuals;
+            }
+            catch (Exception ex)
+            {
+                // unhandled server error
+                // TODO logger
+                throw new ServerErrorException(ex);
+            }
+        }
+
+        private async Task<PagedDataDTO<IndividualDataDTO>> TakePage(IQueryable<Individual> data, int page, int pageSize)
+        {
+            var startIndex = (page - 1) * pageSize;
+            var endIndex = page * pageSize;
+            var results = await data
+                .Skip(startIndex)
+                .Take(pageSize)
+                .ProjectToType<IndividualDataDTO>()
+                .ToListAsync();
+
+            int? previousPage = null;
+            int? nextPage = null;
+
+            if (startIndex > 0)
+            {
+                //previousPage exist
+                previousPage = page - 1;
+            }
+            if (endIndex < data.Count())
+            {
+                //nextPage exist
+                nextPage = page + 1;
+            }
+
+            return new PagedDataDTO<IndividualDataDTO>()
+            {
+                Total = data.Count(),
+                Page = page,
+                PageSize = pageSize,
+                Data = results,
+                NextPage = nextPage,
+                PreviousPage = previousPage
+            };
         }
     }
 }

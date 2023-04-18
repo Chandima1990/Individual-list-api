@@ -20,18 +20,22 @@ namespace InSharpAssessment.WebAPI.Controllers
         /// <summary>
         /// Get all individuals 
         /// </summary>
+        // <param name="page">The page requested by the client</param>
+        // <param name="pageSize">No of records requested by the client</param>
         /// <returns>Individual List</returns>
         /// <response code="200">Returns the individual's list</response>
         /// <response code="500">Returns server error when an unhandled exception thrown or any other server error</response>
         [HttpGet("GetAll")]
-        [ProducesResponseType(typeof(List<IndividualVM>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetAsync()
+        public async Task<IActionResult> GetAsync(
+            int page,
+            int pageSize)
         {
             var individuals = await individualService
-                .GetAllIndividualsAsync();
+                .GetAllIndividualsAsync(page, pageSize);
 
-            return Ok(individuals);
+            return Ok(individuals.Adapt<PagedVM<IndividualVM>>());
         }
 
         /// <summary>
@@ -49,7 +53,8 @@ namespace InSharpAssessment.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAsync(int id)
         {
-            var individual = await individualService.GetIndividualByIdAsync(id);
+            var individual = await individualService
+                .GetIndividualByIdAsync(id);
             return Ok(individual);
         }
 
@@ -69,7 +74,7 @@ namespace InSharpAssessment.WebAPI.Controllers
         public async Task<IActionResult> PostAsync([FromBody] IndividualCreateVM individualFormData)
         {
             var individual = individualFormData
-                .Adapt<IndividualCreateServiceDTO>();
+                   .Adapt<IndividualCreateServiceDTO>();
 
             var individualId = await individualService
                 .CreateIndividualAsync(individual);
@@ -111,14 +116,15 @@ namespace InSharpAssessment.WebAPI.Controllers
         /// <response code="400">Returns bad request response when the request does not have required format or data</response>
         /// <response code="404">Returns not found when the given id does not return any record</response>
         /// <response code="500">Returns server error when an unhandled exception thrown or any other server error</response>
-        [HttpDelete("Delete")]
+        [HttpDelete("Delete/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Delete([FromBody] int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var isDeleted = await individualService.DeleteIndividualAsync(id);
+            var isDeleted = await individualService
+                .DeleteIndividualAsync(id);
             return Ok(isDeleted);
         }
     }

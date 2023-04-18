@@ -2,6 +2,10 @@
 
 namespace InSharpAssessment.DataRepositories.DataManagers.Abstractions
 {
+    /// <summary>
+    /// As the addrresses are not being accessed directly from the application
+    /// These method might not be used
+    /// </summary>
     public interface IAddressData
     {
         //<summary>
