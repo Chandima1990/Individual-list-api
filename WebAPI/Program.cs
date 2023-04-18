@@ -30,6 +30,7 @@ builder.Services
 // Using in memory database
 builder.Services.AddDbContext<ApplicationDBContext>(opt =>
         opt.UseInMemoryDatabase("InSharpInMemoryDatabase")
+        .EnableSensitiveDataLogging()
     );
 
 builder.Services.AddCors();
@@ -37,9 +38,7 @@ builder.Services.AddCors();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddTransient<IAddressService, AddressService>();
 builder.Services.AddTransient<IIndividualService, IndividualService>();
-builder.Services.AddTransient<IAddressData, AddressData>();
 builder.Services.AddTransient<IIndividualData, IndividualData>();
 
 // Configure swagger docs
